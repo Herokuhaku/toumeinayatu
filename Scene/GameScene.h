@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseScene.h"
 #include "SceneMng.h"
+#include "../Tiled/TiledLoader.h"
 
 class GameScene :
 	public BaseScene
@@ -14,4 +15,5 @@ public:
 	void Draw(void)override;
 	void Draw(double ex, double rad)override;
 private:
+	std::vector<TmxData> stagedata_;
 };

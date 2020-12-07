@@ -13,6 +13,7 @@ GameScene::~GameScene()
 void GameScene::Init(void)
 {
 	screenID = MakeScreen(lpSceneMng.GetScreenSize().x, lpSceneMng.GetScreenSize().y);
+	stagedata_.emplace_back(lpTiledLoader.ReadTmx("Tiled/mapdata/stage1"));
 }
 
 std::unique_ptr<BaseScene> GameScene::Update(std::unique_ptr<BaseScene> own)
