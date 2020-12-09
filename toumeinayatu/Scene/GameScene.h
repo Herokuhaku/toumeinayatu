@@ -2,6 +2,8 @@
 #include "BaseScene.h"
 #include "SceneMng.h"
 #include "../Tiled/TiledLoader.h"
+#include "../Obj/Obj.h"
+
 
 class GameScene :
 	public BaseScene
@@ -16,4 +18,10 @@ public:
 	void Draw(double ex, double rad)override;
 private:
 	std::vector<TmxData> stagedata_;
+	TsxData stagetsx_;
+	std::map<std::string,int> num;
+	std::vector<int> Image;
+	Vector2 offset_;
+	int stageNo_;
+	std::vector<std::unique_ptr<Obj>> objlist_;
 };
