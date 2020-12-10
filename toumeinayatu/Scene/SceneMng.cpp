@@ -3,12 +3,14 @@
 #include "SceneMng.h"
 #include "GameScene.h"
 #include "CrossOverScene.h"
+#include "StageSelectScene.h"
 
  SceneMng* SceneMng::sInstance = nullptr;
 
  void SceneMng::Run(void)
  {
-	 sceneNow_ = std::make_unique<GameScene>();
+	 sceneNow_ = std::make_unique<StageSelectScene>();
+	 //sceneNow_ = std::make_unique<GameScene>(0);
 	 while (!ProcessMessage())
 	 {
 		 SetDrawScreen(DX_SCREEN_BACK);

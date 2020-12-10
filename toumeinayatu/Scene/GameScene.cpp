@@ -2,8 +2,9 @@
 #include "GameScene.h"
 #include "../Obj/Player.h"
 
-GameScene::GameScene()
+GameScene::GameScene(int stageno)
 {
+	stageNo_ = stageno;
 	Init();
 }
 
@@ -14,10 +15,11 @@ GameScene::~GameScene()
 void GameScene::Init(void)
 {
 	screenID = MakeScreen(lpSceneMng.GetScreenSize().x, lpSceneMng.GetScreenSize().y);
-	stagedata_.emplace_back(lpTiledLoader.ReadTmx("Tiled/mapdata/stage0"));
+	std::string stage = "Tiled/mapdata/stage";
+	stage += std::to_string(stageNo_);
+	stagedata_.emplace_back(lpTiledLoader.ReadTmx(stage));
 	stagetsx_ = lpTiledLoader.ReadTsx("Tiled/mapdata/Tile");
 
-	stageNo_ = 0;
 	for (auto& data : stagedata_[stageNo_].num)
 	{
 		num[data.first] = std::atoi(data.second.c_str());
@@ -59,7 +61,6 @@ void GameScene::Draw(void)
 
 	for (auto& data : stagedata_[stageNo_].MapData)
 	{
-		//if (data.first == "Char" || data.first == "Goal")continue;
 		int x = 0, y = 0;
 		for (auto& no : data.second)
 		{
@@ -69,43 +70,7 @@ void GameScene::Draw(void)
 			x++;
 			if (x >= num["width"]) { y++; x = 0; }
 		}
-	}	
-	//int x = 0, y = 0;
-	//for (auto& no : stagedata_[stageNo_].MapData["Bg"])
-	//{
-	//	if (0 <= no && 4 > no) {
-	//		DrawRotaGraph(x * num["tilewidth"] + num["tilewidth"] / 2, y * num["tileheight"] + num["tileheight"] / 2, 1.0f, 0.0f, Image[no], true);
-	//	}
-	//	x++;
-	//	if (x >= num["width"]) { y++; x = 0; }
-	//}
-	//x = 0;y = 0;
-	//for (auto& no : stagedata_[stageNo_].MapData["Obj"])
-	//{
-	//	if (0 <= no && 4 > no) {
-	//		DrawRotaGraph(x * num["tilewidth"] + num["tilewidth"] / 2, y * num["tileheight"] + num["tileheight"] / 2, 1.0f, 0.0f, Image[no], true);
-	//	}
-	//	x++;
-	//	if (x >= num["width"]) { y++; x = 0; }
-	//}
-	//x = 0;y = 0;
-	//for (auto& no : stagedata_[stageNo_].MapData["Char"])
-	//{
-	//	if (0 <= no && 4 > no) {
-	//		DrawRotaGraph(x * num["tilewidth"] + num["tilewidth"] / 2, y * num["tileheight"] + num["tileheight"] / 2, 1.0f, 0.0f, Image[no], true);
-	//	}
-	//	x++;
-	//	if (x >= num["width"]) { y++; x = 0; }
-	//}
-	//x = 0;y = 0;
-	//for (auto& no : stagedata_[stageNo_].MapData["Goal"])
-	//{
-	//	if (0 <= no && 4 > no) {
-	//		DrawRotaGraph(x * num["tilewidth"] + num["tilewidth"] / 2, y * num["tileheight"] + num["tileheight"] / 2, 1.0f, 0.0f, Image[no], true);
-	//	}
-	//	x++;
-	//	if (x >= num["width"]) { y++; x = 0; }
-	//}
+	}
 
 	SetDrawScreen(DX_SCREEN_BACK);
 	DrawGraph(0, 0, screenID, true);

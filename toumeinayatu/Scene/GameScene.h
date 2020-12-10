@@ -9,7 +9,7 @@ class GameScene :
 	public BaseScene
 {
 public:
-	GameScene();
+	GameScene(int stageno);
 	~GameScene();
 
 	void Init(void)override;
