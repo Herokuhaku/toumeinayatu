@@ -1,5 +1,8 @@
 #include <DxLib.h>
 #include "GameScene.h"
+#include "CrossOverScene.h"
+#include "StageSelectScene.h"
+#include "GameClearScene.h"
 #include "../Obj/Player.h"
 
 GameScene::GameScene(int stageno)
@@ -46,7 +49,10 @@ std::unique_ptr<BaseScene> GameScene::Update(std::unique_ptr<BaseScene> own)
 	Draw();
 	for (auto& obj : objlist_)
 	{
-		obj->Update();
+		if (obj->Update() == Game::CLEAR)
+		{
+			return std::make_unique<GameClearScene>(screenID);
+		}
 		obj->Draw();
 	}
 	return own;
@@ -80,7 +86,6 @@ void GameScene::Draw(double ex, double rad)
 {
 	SetDrawScreen(screenID);
 	ClsDrawScreen();
-	
 
 	SetDrawScreen(DX_SCREEN_BACK);
 	DrawRotaGraph(lpSceneMng.GetScreenSize().x/2, lpSceneMng.GetScreenSize().y / 2,ex,rad, screenID, true);

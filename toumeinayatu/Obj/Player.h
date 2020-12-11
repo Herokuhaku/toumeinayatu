@@ -22,7 +22,7 @@ public:
 	Player(Vector2 pos,Vector2 size,TmxData& map);
 	~Player();
 	void Draw(void)override;
-	void Update(void)override;
+	Game Update(void)override;
 	void Init(void)override;
 private:
 	// ëÄçÏ

@@ -44,6 +44,7 @@ void StageSelectScene::Draw(void)
 	{
 		stg.Draw();
 	}
+
 	SetDrawScreen(DX_SCREEN_BACK);
 	DrawGraph(0,0,screenID,true);
 }

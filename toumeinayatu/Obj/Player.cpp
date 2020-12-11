@@ -1,7 +1,7 @@
 #include <DxLib.h>
 #include "Player.h"
-#include "../Scene/GameScene.h"
 #include "../AllControl/KeyBoardCtl.h"
+#include "../Scene/SceneMng.h"
 
 
 Player::Player(Vector2 pos, Vector2 size,TmxData& map):map_(map)
@@ -30,7 +30,7 @@ void Player::Draw(void)
 	}
 }
 
-void Player::Update(void)
+Game Player::Update(void)
 {
 	(*controller_)();
 	checkpos_ = {pos_.x,pos_.y};
@@ -38,6 +38,12 @@ void Player::Update(void)
 	{
 		keymove_[key.first](key);
 	}
+	int check = ((pos_.x+size_.x/2) / num["tilewidth"]) + (((pos_.y+size_.x/2) / num["tilewidth"]) * num["width"]);
+	if (map_.MapData["Goal"][check] == 12)
+	{
+		return Game::CLEAR;
+	}
+	return Game::NON;
 }
 
 void Player::Init(void)

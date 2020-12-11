@@ -42,7 +42,7 @@ bool SceneMng::SysInit(void)
 	return true;
 }
 
-SceneMng::SceneMng() :_screenSize(1280,720)
+SceneMng::SceneMng() :_screenSize(32*35,32*20)
 {
 	SysInit();
 }

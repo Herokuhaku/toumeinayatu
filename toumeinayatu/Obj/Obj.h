@@ -11,6 +11,12 @@ enum class ObjType
 	Fire
 };
 
+enum class Game
+{
+	NON,
+	CLEAR,
+	OVER,
+};
 class Obj
 {
 public:
@@ -18,7 +24,7 @@ public:
 	Obj(Vector2 pos,Vector2 size);
 	~Obj();
 	virtual void Draw(void) = 0;
-	virtual void Update(void) = 0;
+	virtual Game Update(void) = 0;
 	virtual void Init(void) = 0;
 protected:
 	Vector2 pos_;
