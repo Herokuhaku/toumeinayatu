@@ -16,6 +16,7 @@ public:
 	std::unique_ptr<BaseScene> Update(std::unique_ptr<BaseScene> own) override;
 	void Draw(void)override;
 	void Draw(double ex, double rad)override;
+	void Ready(void);
 private:
 	std::vector<TmxData> stagedata_;
 	TsxData stagetsx_;
@@ -24,4 +25,7 @@ private:
 	Vector2 offset_;
 	int stageNo_;
 	std::vector<std::unique_ptr<Obj>> objlist_;
+
+	bool ready_;
+	int readycount_;
 };

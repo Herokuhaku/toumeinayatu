@@ -27,6 +27,7 @@ void GameScene::Init(void)
 	{
 		num[data.first] = std::atoi(data.second.c_str());
 	}
+
 	Image.resize(16);
 	LoadDivGraph(stagetsx_.pass.c_str(), 16,
 		4, 4, num["tilewidth"], num["tileheight"], &Image[0]);
@@ -42,19 +43,30 @@ void GameScene::Init(void)
 		}
 		pos++;
 	}
+	
+	ready_ = false;
+	readycount_ = false;
 }
 
 std::unique_ptr<BaseScene> GameScene::Update(std::unique_ptr<BaseScene> own)
 {
+
 	Draw();
 	for (auto& obj : objlist_)
 	{
-		if (obj->Update() == Game::CLEAR)
+		if (ready_)
 		{
-			return std::make_unique<GameClearScene>(screenID);
+			if (obj->Update() == Game::CLEAR)
+			{
+				ready_ = false;
+				Draw();
+				obj->Draw();
+				return std::make_unique<GameClearScene>(screenID);
+			}
 		}
 		obj->Draw();
 	}
+	Ready();
 	return own;
 }
 
@@ -67,6 +79,9 @@ void GameScene::Draw(void)
 
 	for (auto& data : stagedata_[stageNo_].MapData)
 	{
+		if ((data.first == "Obj") && ready_) {
+			continue;
+		}
 		int x = 0, y = 0;
 		for (auto& no : data.second)
 		{
@@ -77,7 +92,6 @@ void GameScene::Draw(void)
 			if (x >= num["width"]) { y++; x = 0; }
 		}
 	}
-
 	SetDrawScreen(DX_SCREEN_BACK);
 	DrawGraph(0, 0, screenID, true);
 }
@@ -89,4 +103,20 @@ void GameScene::Draw(double ex, double rad)
 
 	SetDrawScreen(DX_SCREEN_BACK);
 	DrawRotaGraph(lpSceneMng.GetScreenSize().x/2, lpSceneMng.GetScreenSize().y / 2,ex,rad, screenID, true);
+}
+
+void GameScene::Ready(void)
+{
+	if (!ready_)
+	{
+		if (readycount_ > 300)
+		{
+			ready_ = true;
+		}
+		int size = GetFontSize();
+		SetFontSize(48);
+		DrawFormatString(2,2, 0x0, "%d", 300 / 60 - readycount_++ / 60);
+		DrawFormatString(0,0,0xff0000,"%d",300/60 - readycount_++/60);
+		SetFontSize(size);
+	}
 }
