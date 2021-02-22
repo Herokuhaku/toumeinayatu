@@ -29,7 +29,7 @@ private:
 	void KeyInit();
 	TmxData& map_;
 	std::unique_ptr<Control> controller_;
-	std::map < INPUT_ID, std::function<void(std::pair<INPUT_ID, TrgBool>)>> keymove_;
+	std::map < INPUT_ID, std::function<bool(std::pair<INPUT_ID, TrgBool>)>> keymove_;
 	DIR pldir_;
 	int walk_;
 	int speed_;

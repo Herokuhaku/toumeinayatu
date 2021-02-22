@@ -26,14 +26,17 @@ void Player::Draw(void)
 		DrawGraph(0,0,animation_[frame], true);
 
 		SetDrawScreen(DX_SCREEN_BACK);
-		DrawRotaGraph(pos_.x + num["tilewidth"]/2,pos_.y+size_.x/4,1.0f,0.0f, screen, true);
+		DrawRotaGraph(pos_.x + size_.x / 2, pos_.y + size_.y / 6, 1.0f, 0.0f, screen, true);
+		//DrawRotaGraph(pos_.x + num["tilewidth"]/2,pos_.y+size_.y - num["tilewidth"]/2,1.0f,0.0f, screen, true);
+		//DrawRotaGraph(pos_.x, pos_.y, 1.0f, 0.0f, screen, true);
 	}
 }
 
 Game Player::Update(void)
 {
 	(*controller_)();
-	checkpos_ = {pos_.x,pos_.y};
+	//checkpos_ = {pos_.x,pos_.y};
+	checkpos_ = { pos_.x + size_.x / 2,pos_.y + size_.x / 2 };
 	for (auto& key : controller_->GetCntData())
 	{
 		keymove_[key.first](key);
@@ -43,6 +46,11 @@ Game Player::Update(void)
 	{
 		return Game::CLEAR;
 	}
+	else if (map_.MapData["Obj"][check] == 4)
+	{
+		return Game::OVER;
+	}
+
 	return Game::NON;
 }
 
@@ -72,49 +80,57 @@ void Player::KeyInit()
 	keymove_.try_emplace(INPUT_ID::RIGHT, [&](std::pair<INPUT_ID, TrgBool> data) {
 		if (data.second[static_cast<int>(Trg::Now)])
 		{
+			checkpos_.x += (size_.x / 2 + speed_);
 			pldir_ = DIR::RIGHT;
-			checkpos_.x += speed_ + num["tilewidth"];
 			int check = (checkpos_.x / num["tilewidth"]) + ((checkpos_.y / num["tilewidth"]) * num["width"]);
-			if (checkpos_.x < lpSceneMng.GetScreenSize().x && map_.MapData["Obj"][check] == 255)
+			if (checkpos_.x < lpSceneMng.GetScreenSize().x && (map_.MapData["Obj"][check] == 255 || map_.MapData["Obj"][check] == 4))
 			{
 				pos_.x += speed_;
+				return true;
 			}
 		}
+		return false;
 	});
 	keymove_.try_emplace(INPUT_ID::LEFT, [&](std::pair<INPUT_ID, TrgBool> data) {
 		if (data.second[static_cast<int>(Trg::Now)])
 		{
 			pldir_ = DIR::LEFT;
-			checkpos_.x -= speed_;
+			checkpos_.x -= (size_.x / 2 + speed_);
 			int check = (checkpos_.x / num["tilewidth"]) + ((checkpos_.y / num["tilewidth"]) * num["width"]);
-			if (0 < checkpos_.x && map_.MapData["Obj"][check] == 255)
+			if (0 < checkpos_.x && (map_.MapData["Obj"][check] == 255 || map_.MapData["Obj"][check] == 4))
 			{
 				pos_.x-= speed_;
+				return true;
 			}
 		}
+		return false;
 	});
 	keymove_.try_emplace(INPUT_ID::UP, [&](std::pair<INPUT_ID, TrgBool> data) {
 		if (data.second[static_cast<int>(Trg::Now)])
 		{
 			pldir_ = DIR::UP;
-			checkpos_.y -= speed_;
+			checkpos_.y -= (size_.x / 2 + speed_);
 			int check = (checkpos_.x / num["tilewidth"]) + ((checkpos_.y / num["tilewidth"]) * num["width"]);
-			if (checkpos_.y > 0 &&map_.MapData["Obj"][check] == 255)
+			if (checkpos_.y > 0 && (map_.MapData["Obj"][check] == 255 || map_.MapData["Obj"][check] == 4))
 			{
 				pos_.y -= speed_;
+				return true;
 			}
 		}
+		return false;
 	});
 	keymove_.try_emplace(INPUT_ID::DOWN, [&](std::pair<INPUT_ID, TrgBool> data) {
 		if (data.second[static_cast<int>(Trg::Now)])
 		{
 			pldir_ = DIR::DOWN;
-			checkpos_.y += speed_ + num["tilewidth"];
+			checkpos_.y += (size_.x / 2 + speed_);
 			int check = (checkpos_.x / num["tilewidth"]) + ((checkpos_.y / num["tilewidth"]) * num["width"]);
-			if (checkpos_.y < lpSceneMng.GetScreenSize().y && map_.MapData["Obj"][check] == 255)
+			if (checkpos_.y < lpSceneMng.GetScreenSize().y && (map_.MapData["Obj"][check] == 255 || map_.MapData["Obj"][check] == 4))
 			{
 				pos_.y += speed_;
+				return true;
 			}
 		}
+		return false;
 	});
 }

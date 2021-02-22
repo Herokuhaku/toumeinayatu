@@ -10,5 +10,9 @@ public:
 	void Init(void)override;
 	std::unique_ptr<BaseScene> Update(std::unique_ptr<BaseScene> own)override;
 	void Draw(void)override;
+private:
+	int back;
+	int title;
+	int frame;
 };
 

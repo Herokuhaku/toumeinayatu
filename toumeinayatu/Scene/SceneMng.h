@@ -1,9 +1,18 @@
 #pragma once
+#include <chrono>
+#include <map>
 #include "BaseScene.h"
 #include "../common/Vector2.h"
 
 #define lpSceneMng SceneMng::GetInstance()
 
+enum class MOUSE__
+{
+	NON,
+	LEFT,
+	RIGHT,
+	CENTER
+};
 class SceneMng
 {
 public:
@@ -30,6 +39,7 @@ public:
 
 	void Run(void);
 	Vector2 GetScreenSize(void);
+	std::chrono::system_clock::time_point GetNowTime() { return std::chrono::system_clock::now(); };
 private:
 	bool SysInit(void);
 	const Vector2 _screenSize;
@@ -37,6 +47,8 @@ private:
 
 	SceneMng();
 	~SceneMng();
-	
+	void Draw();
+	int screenid_;
+	std::map<MOUSE__, int> img_;
 	static SceneMng* sInstance;
 };

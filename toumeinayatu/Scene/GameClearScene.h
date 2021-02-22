@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseScene.h"
+#include "../NextButton.h"
 
 class GameClearScene :
 	public BaseScene
@@ -12,5 +13,6 @@ public:
 	void Draw(void)override;
 private:
 	int tmpscreen;
+	NextButton* next_;
 };
 

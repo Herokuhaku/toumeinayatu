@@ -18,7 +18,7 @@ public:
 	void Draw(double ex, double rad)override;
 	void Ready(void);
 private:
-	std::vector<TmxData> stagedata_;
+	TmxData stagedata_;
 	TsxData stagetsx_;
 	std::map<std::string,int> num;
 	std::vector<int> Image;
@@ -27,5 +27,10 @@ private:
 	std::vector<std::unique_ptr<Obj>> objlist_;
 
 	bool ready_;
+	bool view_;
 	int readycount_;
+	int viewcount_;
+
+	int loophistory_;
+	int viewtime_;
 };

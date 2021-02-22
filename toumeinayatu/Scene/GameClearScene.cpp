@@ -18,12 +18,18 @@ GameClearScene::~GameClearScene()
 void GameClearScene::Init(void)
 {
 	screenID = MakeScreen(lpSceneMng.GetScreenSize().x, lpSceneMng.GetScreenSize().y,true);
+
+	next_ = new NextButton(Vector2{1000,677}, Vector2{120,30});
 }
 
 std::unique_ptr<BaseScene> GameClearScene::Update(std::unique_ptr<BaseScene> own)
 {
 	Draw();
-	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
+	if ((GetMouseInput() == MOUSE_INPUT_RIGHT) != 0)
+	{
+		return std::make_unique<CrossOverScene>(std::move(own),std::make_unique<StageSelectScene>());
+	}
+	if (!next_->Update())
 	{
 		return std::make_unique<CrossOverScene>(std::move(own),std::make_unique<StageSelectScene>());
 	}
@@ -46,5 +52,5 @@ void GameClearScene::Draw(void)
 	SetDrawScreen(DX_SCREEN_BACK);
 	DrawGraph(0,0,tmpscreen,true);
 	DrawGraph(0, 0,screenID, true);
-
+	next_->Draw();
 }

@@ -3,7 +3,7 @@
 class Stage
 {
 public:
-	Stage(Vector2 pos,int stageno);
+	Stage(Vector2 pos,Vector2 size,int stageno);
 	~Stage();
 	bool Update(void);
 	void Draw(void);

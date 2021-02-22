@@ -2,10 +2,11 @@
 #include <string>
 #include "Stage.h"
 
-Stage::Stage(Vector2 pos,int stageno)
+Stage::Stage(Vector2 pos,Vector2 size,int stageno)
 {
 	pos_ = pos;
 	stageno_ = stageno;
+	windowSize_ = size;
 	Init();
 }
 
@@ -21,7 +22,7 @@ bool Stage::Update(void)
 		pos_.y < mouse.y && mouse.y < windowSize_.y + pos_.y)
 	{
 		selectflag_ = true;
-		if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
+		if ((GetMouseInput() == MOUSE_INPUT_LEFT) != 0)
 		{
 			return false;
 		}
@@ -34,10 +35,13 @@ void Stage::Draw(void)
 {
 	SetDrawScreen(screen_);
 	ClsDrawScreen();
-
+	int before = GetFontSize();
+	SetFontSize(24);
+	int font_ = 24;
 	DrawBox(0,0,windowSize_.x,windowSize_.y,0x99ff99,true);
 	std::string str = "StageNo : %d";
-	DrawFormatString(windowSize_.x/2 - (GetFontSize() * ((str.size()-1)/2)),windowSize_.y/4,0x0,str.c_str(),stageno_+1);
+	//std::string str = "%d";
+	DrawFormatString(windowSize_.x/2 - ((str.size()*(font_/2)) /2),windowSize_.y/2-(font_),0x0,str.c_str(),stageno_+1);
 	if (selectflag_)
 	{
 		for (int i = 0;i < 5;i++)
@@ -47,6 +51,8 @@ void Stage::Draw(void)
 	}
 	SetDrawScreen(DX_SCREEN_BACK);
 	DrawGraph(pos_.x,pos_.y,screen_,true);
+
+	SetFontSize(before);
 }
 
 int Stage::GetNo(void)
@@ -56,7 +62,7 @@ int Stage::GetNo(void)
 
 void Stage::Init()
 {
-	windowSize_ = {300,200};
+	//windowSize_ = {300,200};
 	screen_ = MakeScreen(windowSize_.x,windowSize_.y);
 	selectflag_ = false;
 }
